@@ -37,6 +37,7 @@ public class Main extends JPanel {
 			//Antes de actualizar el frame comprobamos colisiones
 			colision();
 			
+			//Al invocar repaint es cuando dibujamos el frame
 			ventana.repaint();
 			
 			frame();
@@ -54,6 +55,7 @@ public class Main extends JPanel {
 	 * <b> SOLO COMPRUEBA LA POSICION DE LA CABEZA, YA QUE ES LA UNICA RELEVANTE </br>
 	 */
 	private static void colision() {
+		boolean incorrecto = false;
 		BodyPart head = snake.getCuerpo().get(0);
 		//Primero comprobamos la colisión con los muros
 		if (head.getX()*10 >= width || head.getX()*10 < 0 || head.getY()*10 >= height ||head.getY()*10 < 0) {
@@ -69,8 +71,21 @@ public class Main extends JPanel {
 		} else {
 			for (BodyPart parte : snake.getCuerpo()) {
 				if (parte!=head && parte.getX()==head.getX() && parte.getY()==head.getY()) {
-					muerto("Colisión con cuerpo");
+					if (parte == snake.getCuerpo().get(2)) {
+						//En teoría aquí estamos comprobando si hemos chocado en dirección contraria
+						//Aka, la serpiente va hacia arriba y pulsamos hacia abajo
+						System.err.println("Dirección incorrecta");
+						speedX = speedX * -1;
+						speedY = speedY * -1;
+						incorrecto = true;
+						
+					} else {
+						muerto("Colisión con cuerpo");
+					}
 				}
+			}
+			if (incorrecto) {
+				snake.move(speedX, speedY);
 			}
 		}
 	}
