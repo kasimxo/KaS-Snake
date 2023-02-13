@@ -179,6 +179,22 @@ public class Main extends JPanel {
                 	speedY = 0;
                 	speedX = 1;
                     break;
+                case KeyEvent.VK_UP:
+                	speedY = -1;
+                	speedX = 0;
+                    break;
+                case KeyEvent.VK_DOWN:
+                	speedY = 1;
+                	speedX = 0;
+                    break;
+                case KeyEvent.VK_LEFT:
+                	speedY = 0;
+                	speedX = -1;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                	speedY = 0;
+                	speedX = 1;
+                    break;
                 }
             }
 
