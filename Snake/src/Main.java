@@ -2,11 +2,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class Main extends JPanel {
 	
@@ -25,23 +28,18 @@ public class Main extends JPanel {
 	private static int speedY = 0;
 	private static boolean alive = true;
 	private static KeyListener listener;
+	private static Timer timer;
+	private static ActionListener alistener;
 	private static final long serialVersionUID = 5198887656751766342L;
 
 	public static void main(String[] args) {
 		
 		inicialize();
 		
-		//Entramos en el loop de juego
-		while(alive) {
-			snake.move(speedX,speedY);
-			//Antes de actualizar el frame comprobamos colisiones
-			colision();
-			
-			//Al invocar repaint es cuando dibujamos el frame
-			ventana.repaint();
-			
-			frame();
-		}
+		timer = new Timer(framerate, alistener);
+		
+		timer.start();
+		
 		
 	}
 	
@@ -213,6 +211,20 @@ public class Main extends JPanel {
         
         ventana.addKeyListener(listener);
         ventana.setFocusable(true); // very important
+        
+        alistener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				snake.move(speedX,speedY);
+				colision();
+				
+				//Al invocar repaint es cuando dibujamos el frame
+				ventana.repaint();
+				
+			}
+        	
+        };
 	}
 
 	
