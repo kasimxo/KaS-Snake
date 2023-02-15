@@ -1,10 +1,17 @@
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class Apple {
 	
 	private int x,y;
 	private Color color = Color.red;
 	private int radio = 10;
+	
+	private BufferedImage img;
 	
 	
 	
@@ -16,6 +23,16 @@ public class Apple {
 		super();
 		this.x = x;
 		this.y = y;
+		
+		File file = new File("C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Apple.png");
+		
+		try {
+			this.img =  ImageIO.read(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public int getX() {
@@ -54,5 +71,10 @@ public class Apple {
 	public void setRadio(int radio) {
 		this.radio = radio;
 	}
+
+	public BufferedImage getImg() {
+		return img;
+	}
+
 	
 }

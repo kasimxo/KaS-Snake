@@ -39,8 +39,19 @@ public class Main extends JPanel {
 	private static ActionListener alistener;
 	private static final long serialVersionUID = 5198887656751766342L;
 	private static BufferedImage img;
+	private static BufferedImage imgApple;
 
 	public static void main(String[] args) {
+		
+		File file = new File("C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Apple.png");
+		
+		try {
+			imgApple =  ImageIO.read(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		
+		}
 		
 		inicialize();
 		
@@ -322,13 +333,9 @@ public class Main extends JPanel {
 			
 			g.drawImage(img, parte.getX()*10, parte.getY()*10, null);
 			
-			g.setColor(parte.getColor());
-			//g.fillRect(parte.getX()*10, parte.getY()*10, parte.getWidth(), parte.getHeight());
 			
 		}
-		
-		g.setColor(manzana.getColor());
-		g.fillOval(manzana.getX()*10, manzana.getY()*10, manzana.getRadio(), manzana.getRadio());
+		g.drawImage(imgApple, manzana.getX()*10, manzana.getY()*10, null);
 	}
 	
 	/**
