@@ -2,11 +2,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -23,7 +30,7 @@ public class Main extends JPanel {
 	//El frame rate es la cantidad de milisengundos que esperamos para actualizar cada frame
 	//No es preciso porque no tiene en cuenta el tiempo que se haya perdido con los procesos
 	//IE: Es un tiempo fijo de espera después de todos los procesos
-	private static int framerate = 60;
+	private static int framerate = 100;
 	private static int speedX = 0;
 	private static int speedY = 0;
 	private static boolean alive = true;
@@ -31,6 +38,7 @@ public class Main extends JPanel {
 	private static Timer timer;
 	private static ActionListener alistener;
 	private static final long serialVersionUID = 5198887656751766342L;
+	private static BufferedImage img;
 
 	public static void main(String[] args) {
 		
@@ -146,7 +154,8 @@ public class Main extends JPanel {
 		//Iniciamos tanto la ventaana, como sus características principales
 		ventana = new JFrame("KaS - Snake");
 		var panel = new Main();
-        panel.setBackground(Color.LIGHT_GRAY);
+        panel.setBackground(Color.white);
+        ventana.setBackground(Color.white);
         
         ventana.getContentPane().setPreferredSize(new Dimension(width,height));
         ventana.pack();
@@ -234,10 +243,87 @@ public class Main extends JPanel {
 	public void paintComponent(Graphics g) {
 		
 		//Iteramos por todo el cuerpo y lo vamos dibujando
-		for (BodyPart parte  : snake.getCuerpo()) {
+		for (int especifico = 0; especifico<snake.getCuerpo().size(); especifico++) {
+			
+			BodyPart parte = snake.getCuerpo().get(especifico);
+			
+			String head = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Head";
+			String body = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Straight";
+			String bodyL = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Turn";
+			String tail = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Tail";
+			String def = "";
+			
+			if (especifico==0) {
+				
+				if(speedX>0) {
+					def=head+"R.png";
+				} else if (speedX<0) {
+					def=head+"L.png";
+				} else if (speedY<0) {
+					def=head+"U.png";
+				} else {
+					def=head+"D.png";
+				}
+				
+			} else if (especifico==snake.getCuerpo().size()-1) {
+				//Aquí estamos en la cola
+				//vamos a compararlo con la posición anterior
+				BodyPart prev = snake.getCuerpo().get(especifico-1);
+				if (parte.getX()==prev.getX()) {
+					if(parte.getY()>prev.getY()) {
+						def=tail+"U.png";
+					} else {
+						def=tail+"D.png";
+					}
+				} else {
+					if(parte.getX()>prev.getX()) {
+						//this is not woring as it should
+						def=tail+"L.png";
+						System.err.println("DEBUG");
+					} else {
+						def=tail+"R.png";
+						System.out.println("DEBUG");
+					}
+				}
+			} else {
+				//Aquí en teoría estamos en el cuerpo
+				BodyPart prev = snake.getCuerpo().get(especifico-1);
+				BodyPart post = snake.getCuerpo().get(especifico+1);
+				if(prev.getX()==parte.getX() && parte.getX()==post.getX()) {
+					//estamos en columna
+					def=body+"U.png";
+				} else if (prev.getY()==parte.getY() && parte.getY()==post.getY()) {
+					def=body+"R.png";
+				} else {
+					//aquí estamos en los casos que no son columna o fila
+					if(prev.getX()>post.getX() && prev.getY()>post.getY() || post.getX()>prev.getX() && post.getY()>prev.getY()) {
+						//Este esta bien
+						def=bodyL+"R.png";
+					} else if(prev.getX()>post.getX() && prev.getY()<post.getY() || post.getX()>prev.getX() && post.getY()<prev.getY()) {
+						def=bodyL+"D.png";
+					} else if(prev.getX()<post.getX() && prev.getY()<post.getY() || post.getX()<prev.getX() && post.getY()<prev.getY()) {
+						def=bodyL+"U.png";
+					} else {
+						def=bodyL+"L.png";
+					}
+				}
+				
+			}
+			
+			
+			try {
+				
+				img = ImageIO.read(new File(def));
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			g.drawImage(img, parte.getX()*10, parte.getY()*10, null);
 			
 			g.setColor(parte.getColor());
-			g.fillRect(parte.getX()*10, parte.getY()*10, parte.getWidth(), parte.getHeight());
+			//g.fillRect(parte.getX()*10, parte.getY()*10, parte.getWidth(), parte.getHeight());
 			
 		}
 		
