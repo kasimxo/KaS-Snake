@@ -288,16 +288,14 @@ public class Main extends JPanel {
 					}
 				} else {
 					if(parte.getX()>prev.getX()) {
-						//this is not woring as it should
 						def=tail+"L.png";
-						System.err.println("DEBUG");
 					} else {
 						def=tail+"R.png";
-						System.out.println("DEBUG");
 					}
 				}
 			} else {
 				//Aquí en teoría estamos en el cuerpo
+				//LA PREV ES LA QUE ESTA MAS CERCA DE LA CABEZA
 				BodyPart prev = snake.getCuerpo().get(especifico-1);
 				BodyPart post = snake.getCuerpo().get(especifico+1);
 				if(prev.getX()==parte.getX() && parte.getX()==post.getX()) {
@@ -307,15 +305,31 @@ public class Main extends JPanel {
 					def=body+"R.png";
 				} else {
 					//aquí estamos en los casos que no son columna o fila
-					if(prev.getX()>post.getX() && prev.getY()>post.getY() || post.getX()>prev.getX() && post.getY()>prev.getY()) {
-						//Este esta bien
-						def=bodyL+"R.png";
-					} else if(prev.getX()>post.getX() && prev.getY()<post.getY() || post.getX()>prev.getX() && post.getY()<prev.getY()) {
-						def=bodyL+"D.png";
-					} else if(prev.getX()<post.getX() && prev.getY()<post.getY() || post.getX()<prev.getX() && post.getY()<prev.getY()) {
-						def=bodyL+"U.png";
+					if(prev.getX()>post.getX() && prev.getY()>post.getY()) {
+						//Todo esto esta bien
+						if(prev.getY()==parte.getY()) {
+							def=bodyL+"R.png";
+						} else {
+							def=bodyL+"L.png";
+						}
+					} else if(prev.getX()>post.getX() && prev.getY()<post.getY() ) {
+						if(prev.getY()==parte.getY()) {
+							def=bodyL+"D.png";
+						} else {
+							def=bodyL+"U.png";
+						}
+					} else if(prev.getX()<post.getX() && prev.getY()<post.getY() ) {
+						if(prev.getY()==parte.getY()) {
+							def=bodyL+"L.png";
+						} else {
+							def=bodyL+"R.png";
+						}
 					} else {
-						def=bodyL+"L.png";
+						if(prev.getY()==parte.getY()) {
+							def=bodyL+"U.png";
+						} else {
+							def=bodyL+"D.png";
+						}
 					}
 				}
 				
