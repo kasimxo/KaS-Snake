@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -40,6 +41,7 @@ public class Main extends JPanel {
 	private static final long serialVersionUID = 5198887656751766342L;
 	private static BufferedImage img;
 	private static BufferedImage imgApple;
+	private static int score = 0;
 
 	public static void main(String[] args) {
 		
@@ -80,6 +82,7 @@ public class Main extends JPanel {
 		} else if (head.getX()==manzana.getX() && head.getY()==manzana.getY()) {
 			//Después la colisión con la manzana
 			snake.alargar();
+			score++;
 			int[] coord = randomCoordinate();
 			while(!validarCoord(coord)) {
 				coord = randomCoordinate();
@@ -128,18 +131,6 @@ public class Main extends JPanel {
 	private static void muerto(String s) {
 		System.err.println("Has muerto por: " + s);
 		alive=false;
-	}
-
-	/**
-	 * Este método sirve parar esperar un intervalo de milisegundos establecido
-	 */
-	private static void frame() {
-		try {
-			Thread.sleep(framerate);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -213,6 +204,11 @@ public class Main extends JPanel {
                 	speedY = 0;
                 	speedX = 1;
                     break;
+                case KeyEvent.VK_R:
+                	if(!alive) {
+                		restart();
+                	}
+                	break;
                 }
             }
 
@@ -236,18 +232,47 @@ public class Main extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				snake.move(speedX,speedY);
-				colision();
+				if(!alive) {
+					timer.stop();
+					showScore();
+				} else {
+					snake.move(speedX,speedY);
+					colision();
+					
+					//Al invocar repaint es cuando dibujamos el frame
+					ventana.repaint();
+				}
 				
-				//Al invocar repaint es cuando dibujamos el frame
-				ventana.repaint();
+				
 				
 			}
         	
         };
 	}
 
-	
+	/**
+	 * Aquí reseteamos toda la partida para que se pueda volver a jugar
+	 */
+	protected static void restart() {
+		ventana.dispose();
+		alive = true;
+		speedX = 0;
+		speedY = 0;
+		inicialize();
+		timer.start();
+	}
+
+	protected static void showScore() {
+		JLabel popupScore = new JLabel(); 
+		popupScore.setText("<html><p style='text-align: center;'>SCORE: "+ score +"<br/>Pulsa [R] para volver a jugar<p/>");
+		popupScore.setBounds(0, 0, width, height);
+		popupScore.setHorizontalAlignment(JLabel.CENTER);
+		popupScore.setVerticalAlignment(JLabel.CENTER);
+		popupScore.setVisible(true);
+		ventana.add(popupScore);
+		ventana.repaint();
+	}
+
 	/**
 	 * Aquí es donde vamos a pintarlo todo cada frame, es el método encargado de pintar los frames
 	 */
