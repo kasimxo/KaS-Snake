@@ -17,22 +17,18 @@ public class Apple {
 	
 	public Apple() {
 		super();
+		File file = new File("C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Apple.png");
+		try {
+			this.img =  ImageIO.read(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Apple(int x, int y) {
 		super();
 		this.x = x;
 		this.y = y;
-		
-		File file = new File("C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Apple.png");
-		
-		try {
-			this.img =  ImageIO.read(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	public int getX() {

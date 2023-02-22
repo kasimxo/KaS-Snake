@@ -45,22 +45,11 @@ public class Main extends JPanel {
 
 	public static void main(String[] args) {
 		
-		File file = new File("C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Apple.png");
-		
-		try {
-			imgApple =  ImageIO.read(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		
-		}
-		
 		inicialize();
 		
 		timer = new Timer(framerate, alistener);
 		
 		timer.start();
-		
 		
 	}
 	
@@ -148,6 +137,7 @@ public class Main extends JPanel {
 			coord = randomCoordinate();
 		}
 		manzana.setPosition(coord);
+		imgApple=manzana.getImg();
 		
 		//Aquí generamos el cuerpo, con una posición fija
 		snake = new SnakeBody(new BodyPart(30,15));
@@ -242,11 +232,7 @@ public class Main extends JPanel {
 					//Al invocar repaint es cuando dibujamos el frame
 					ventana.repaint();
 				}
-				
-				
-				
 			}
-        	
         };
 	}
 
