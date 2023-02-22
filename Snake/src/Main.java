@@ -40,7 +40,6 @@ public class Main extends JPanel {
 	private static ActionListener alistener;
 	private static final long serialVersionUID = 5198887656751766342L;
 	private static BufferedImage img;
-	private static BufferedImage imgApple;
 	private static int score = 0;
 
 	public static void main(String[] args) {
@@ -137,7 +136,6 @@ public class Main extends JPanel {
 			coord = randomCoordinate();
 		}
 		manzana.setPosition(coord);
-		imgApple=manzana.getImg();
 		
 		//Aquí generamos el cuerpo, con una posición fija
 		snake = new SnakeBody(new BodyPart(30,15));
@@ -360,7 +358,7 @@ public class Main extends JPanel {
 			
 			
 		}
-		g.drawImage(imgApple, manzana.getX()*10, manzana.getY()*10, null);
+		g.drawImage(manzana.getImg(), manzana.getX()*10, manzana.getY()*10, null);
 	}
 	
 	/**
