@@ -2,7 +2,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -247,14 +247,28 @@ public class Main extends JPanel {
 	}
 
 	protected static void showScore() {
+		
+		String display = "";
+		
+		int bestScore = HighScore.readBestScore();
+		
+		
+		
+		if(bestScore>=score) {
+			display = "<html><p style='text-align: center;'>SCORE: "+ score +"<br/>BEST SCORE: " + bestScore + "<br/>Pulsa [R] para volver a jugar<p/>";
+		} else {
+			HighScore.saveBestScore(score);
+			display = "<html><p style='text-align: center;'>NEW BEST SCORE<br/>SCORE: "+ score +"<br/>BEST SCORE: " + bestScore + "<br/>Pulsa [R] para volver a jugar<p/>";
+		}
 		JLabel popupScore = new JLabel(); 
-		popupScore.setText("<html><p style='text-align: center;'>SCORE: "+ score +"<br/>Pulsa [R] para volver a jugar<p/>");
+		popupScore.setText(display);
 		popupScore.setBounds(0, 0, width, height);
 		popupScore.setHorizontalAlignment(JLabel.CENTER);
 		popupScore.setVerticalAlignment(JLabel.CENTER);
 		popupScore.setVisible(true);
 		ventana.add(popupScore);
 		ventana.repaint();
+		
 	}
 
 	/**
