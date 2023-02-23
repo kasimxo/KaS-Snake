@@ -271,11 +271,7 @@ public class Main extends JPanel {
 			display = "<html><p style='text-align: center;'>SCORE: "+ score +"<br/>BEST SCORE: " + bestScore + "<br/>Pulsa [R] para volver a jugar<p/>";
 		} else {
 			HighScore.saveBestScore(score);
-<<<<<<< HEAD
 			display = "<html><p style='text-align: center;'>NEW BEST SCORE<br/>SCORE: "+ score +"<br/>PREVIOUS BEST SCORE: " + bestScore + "<br/>Pulsa [R] para volver a jugar<p/>";
-=======
-			display = "<html><p style='text-align: center;'>NEW BEST SCORE<br/>SCORE: "+ score +"<br/>BEST SCORE: " + bestScore + "<br/>Pulsa [R] para volver a jugar<p/>";
->>>>>>> branch 'main' of git@github.com:kasimxo/KaS-Snake.git
 		}
 		JLabel popupScore = new JLabel(); 
 		popupScore.setText(display);
