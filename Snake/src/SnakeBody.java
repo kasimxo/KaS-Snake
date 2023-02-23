@@ -40,6 +40,13 @@ public class SnakeBody {
 	public void setCuerpo(List<BodyPart> cuerpo) {
 		this.cuerpo = cuerpo;
 	}
-	
-	
+	/**
+	 * Añade un segmento de cuerpo en la posición indicada
+	 * Se usa en el inicio para que el cuerpo se genere con dos segmentos, cabeza y cola
+	 * @param x
+	 * @param y
+	 */
+	public void addSpecific(int x, int y) {
+		this.cuerpo.add(new BodyPart(x,y));
+	}
 }

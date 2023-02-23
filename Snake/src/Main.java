@@ -40,6 +40,7 @@ public class Main extends JPanel {
 	private static ActionListener alistener;
 	private static final long serialVersionUID = 5198887656751766342L;
 	private static BufferedImage img;
+	private static BufferedImage iconImage;
 	private static int score = 0;
 
 	public static void main(String[] args) {
@@ -76,10 +77,12 @@ public class Main extends JPanel {
 				coord = randomCoordinate();
 			}
 			manzana.setPosition(randomCoordinate());
-		} else {
+		} else if (snake.getCuerpo().size()>2) {
+			//Tal y como estan construidas ahora mismo las mecánicas de juego no resulta posible chocarte contigo mismo si únicamente
+			//tienes dos segmentos corporales (cabeza-cola) por lo que no tiene sentido realizar esta comprobación
 			for (BodyPart parte : snake.getCuerpo()) {
 				if (parte!=head && parte.getX()==head.getX() && parte.getY()==head.getY()) {
-					if (parte == snake.getCuerpo().get(2)) {
+					if ( parte == snake.getCuerpo().get(2)) {
 						//En teoría aquí estamos comprobando si hemos chocado en dirección contraria
 						//Aka, la serpiente va hacia arriba y pulsamos hacia abajo
 						System.err.println("Dirección incorrecta");
@@ -139,14 +142,21 @@ public class Main extends JPanel {
 		
 		//Aquí generamos el cuerpo, con una posición fija
 		snake = new SnakeBody(new BodyPart(30,15));
+		snake.addSpecific(30, 14);
 		
+		String iconS = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\icon.png";
+		try {
+			iconImage = ImageIO.read(new File(iconS));
+		} catch (IOException e1) {
+			System.err.println("No se encuentra la imgen icono para el mainframe.");
+		}
 		
 		//Iniciamos tanto la ventaana, como sus características principales
 		ventana = new JFrame("KaS - Snake");
 		var panel = new Main();
         panel.setBackground(Color.white);
         ventana.setBackground(Color.white);
-        
+        ventana.setIconImage(iconImage);
         ventana.getContentPane().setPreferredSize(new Dimension(width,height));
         ventana.pack();
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -197,6 +207,7 @@ public class Main extends JPanel {
                 		restart();
                 	}
                 	break;
+                
                 }
             }
 
@@ -224,7 +235,9 @@ public class Main extends JPanel {
 					timer.stop();
 					showScore();
 				} else {
-					snake.move(speedX,speedY);
+					if(speedX!=0 || speedY!=0) {
+						snake.move(speedX,speedY);
+					}
 					colision();
 					
 					//Al invocar repaint es cuando dibujamos el frame
@@ -258,7 +271,7 @@ public class Main extends JPanel {
 			display = "<html><p style='text-align: center;'>SCORE: "+ score +"<br/>BEST SCORE: " + bestScore + "<br/>Pulsa [R] para volver a jugar<p/>";
 		} else {
 			HighScore.saveBestScore(score);
-			display = "<html><p style='text-align: center;'>NEW BEST SCORE<br/>SCORE: "+ score +"<br/>BEST SCORE: " + bestScore + "<br/>Pulsa [R] para volver a jugar<p/>";
+			display = "<html><p style='text-align: center;'>NEW BEST SCORE<br/>SCORE: "+ score +"<br/>PREVIOUS BEST SCORE: " + bestScore + "<br/>Pulsa [R] para volver a jugar<p/>";
 		}
 		JLabel popupScore = new JLabel(); 
 		popupScore.setText(display);
@@ -276,10 +289,12 @@ public class Main extends JPanel {
 	 */
 	public void paintComponent(Graphics g) {
 		
+		BodyPart parte;
+		
 		//Iteramos por todo el cuerpo y lo vamos dibujando
 		for (int especifico = 0; especifico<snake.getCuerpo().size(); especifico++) {
 			
-			BodyPart parte = snake.getCuerpo().get(especifico);
+			parte = snake.getCuerpo().get(especifico);
 			
 			String head = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Head";
 			String body = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Straight";
