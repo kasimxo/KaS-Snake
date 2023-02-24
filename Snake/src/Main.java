@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -153,6 +154,7 @@ public class Main extends JPanel {
 		
 		//Iniciamos tanto la ventaana, como sus características principales
 		ventana = new JFrame("KaS - Snake");
+		
 		var panel = new Main();
         panel.setBackground(Color.white);
         ventana.setBackground(Color.white);
@@ -161,6 +163,10 @@ public class Main extends JPanel {
         ventana.pack();
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.getContentPane().add(panel, BorderLayout.CENTER);
+        //.setLocationRelativeTo(null)
+        //Hace que la pantalla aparezca centrada, pero hay que poderlo despues de especificar el tamaño y el .pack()
+        //Pero antes del .setVisible()
+        ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
         
         
@@ -251,11 +257,13 @@ public class Main extends JPanel {
 	 * Aquí reseteamos toda la partida para que se pueda volver a jugar
 	 */
 	protected static void restart() {
+		Point newPos = ventana.getLocation();
 		ventana.dispose();
 		alive = true;
 		speedX = 0;
 		speedY = 0;
 		inicialize();
+		ventana.setLocation(newPos);
 		timer.start();
 	}
 
