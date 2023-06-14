@@ -17,7 +17,8 @@ public class Apple {
 	
 	public Apple() {
 		super();
-		File file = new File("C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Apple.png");
+		File file = new File(new File("").getAbsolutePath() +"/imgs/Apple.png");
+		file = new File(OsPaths.cleanPath(file.toString()));
 		try {
 			this.img =  ImageIO.read(file);
 		} catch (IOException e) {

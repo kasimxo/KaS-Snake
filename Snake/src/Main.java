@@ -145,7 +145,8 @@ public class Main extends JPanel {
 		snake = new SnakeBody(new BodyPart(30,15));
 		snake.addSpecific(30, 14);
 		
-		String iconS = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\icon.png";
+		String iconS = new File("").getAbsolutePath()+"/imgs/icon.png";
+		iconS = OsPaths.cleanPath(iconS);
 		try {
 			iconImage = ImageIO.read(new File(iconS));
 		} catch (IOException e1) {
@@ -304,10 +305,14 @@ public class Main extends JPanel {
 			
 			parte = snake.getCuerpo().get(especifico);
 			
-			String head = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Head";
-			String body = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Straight";
-			String bodyL = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Turn";
-			String tail = "C:\\Users\\Andrés\\git\\KaS-Snake\\Snake\\imgs\\Tail";
+			String head = new File("").getAbsolutePath()+"/imgs/Head";
+			head = OsPaths.cleanPath(head);
+			String body = new File("").getAbsolutePath()+"/imgs/Straight";
+			body = OsPaths.cleanPath(body);
+			String bodyL = new File("").getAbsolutePath()+"/imgs/Turn";
+			bodyL = OsPaths.cleanPath(bodyL);
+			String tail = new File("").getAbsolutePath()+"/imgs/Tail";
+			tail = OsPaths.cleanPath(tail);
 			String def = "";
 			
 			if (especifico==0) {
